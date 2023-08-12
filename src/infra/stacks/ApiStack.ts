@@ -11,7 +11,7 @@ export class ApiStack extends Stack {
         super(scope, id, props)
 
         const api = new RestApi(this, 'SportsApi');
-        const sportsResource = api.root.addResource('sports');
+        const sportsResource = api.root.addResource('ingest');
         sportsResource.addMethod('GET', props.sportsLambdaIntegration)
         sportsResource.addMethod('POST', props.sportsLambdaIntegration)
         sportsResource.addMethod('PUT', props.sportsLambdaIntegration)
