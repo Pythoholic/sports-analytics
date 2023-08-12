@@ -32,7 +32,10 @@ export class LambdaStack extends Stack {
             resources: [props.sportsTable.tableArn],
             actions: [
                 'dynamodb:PutItem',
-                'dynamodb:GetItem'
+                'dynamodb:GetItem',
+                'dynamodb:UpdateItem',
+                'dynamodb:Scan',
+                'dynamodb:DeleteItem'
             ]
         }))
 

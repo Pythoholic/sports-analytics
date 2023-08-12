@@ -2,6 +2,7 @@ import { APIGatewayProxyEvent, APIGatewayProxyResult, Context } from "aws-lambda
 import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
 import { postSports } from "./PostSports";
 import { getSports } from "./GetSports";
+import { updateSports } from "./UpdateSports";
 
 const ddbClient = new DynamoDBClient({});
 
@@ -11,11 +12,14 @@ async function handler(event: APIGatewayProxyEvent, context: Context): Promise<A
     try {
         switch (event.httpMethod){
             case 'GET':
-                const getResponse =  getSports(event, ddbClient);
+                const getResponse =  await getSports(event, ddbClient);
                 return getResponse;
             case 'POST':
-                const postResponse =  postSports(event, ddbClient);
+                const postResponse =  await postSports(event, ddbClient);
                 return postResponse;
+            case 'PUT':
+                const putResponse =  await updateSports(event, ddbClient);
+                return putResponse;
             default:
                 break;
         }
