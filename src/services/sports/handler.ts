@@ -4,6 +4,7 @@ import { postSports } from "./PostSports";
 import { getSports } from "./GetSports";
 import { updateSports } from "./UpdateSports";
 import { deleteSports } from "./DeleteSports";
+import { MissingFieldError } from "../shared/Validator";
 
 const ddbClient = new DynamoDBClient({});
 
@@ -29,6 +30,12 @@ async function handler(event: APIGatewayProxyEvent, context: Context): Promise<A
         }
     } catch (error) {
         console.error(error)
+        if (error instanceof MissingFieldError){
+            return {
+                statusCode: 400,
+                body: JSON.stringify(error.message)
+            }
+        }
         return {
             statusCode: 500,
             body: JSON.stringify(error.message)
