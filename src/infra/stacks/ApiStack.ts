@@ -15,5 +15,6 @@ export class ApiStack extends Stack {
         sportsResource.addMethod('GET', props.sportsLambdaIntegration)
         sportsResource.addMethod('POST', props.sportsLambdaIntegration)
         sportsResource.addMethod('PUT', props.sportsLambdaIntegration)
+        sportsResource.addMethod('DELETE', props.sportsLambdaIntegration)
     }
 }

@@ -3,6 +3,7 @@ import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
 import { postSports } from "./PostSports";
 import { getSports } from "./GetSports";
 import { updateSports } from "./UpdateSports";
+import { deleteSports } from "./DeleteSports";
 
 const ddbClient = new DynamoDBClient({});
 
@@ -20,6 +21,9 @@ async function handler(event: APIGatewayProxyEvent, context: Context): Promise<A
             case 'PUT':
                 const putResponse =  await updateSports(event, ddbClient);
                 return putResponse;
+            case 'DELETE':
+                const deleteResponse =  await deleteSports(event, ddbClient);
+                return deleteResponse;
             default:
                 break;
         }
