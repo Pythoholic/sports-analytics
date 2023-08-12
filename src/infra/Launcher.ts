@@ -10,5 +10,5 @@ const lambdaStack = new LambdaStack(app, 'LambdaStack', {
     sportsTable: dataStack.sportsTable
 });
 new ApiStack(app, 'ApiStack', {
-    helloLambdaIntegration: lambdaStack.helloLambdaIntegration
+    sportsLambdaIntegration: lambdaStack.sportsLambdaIntegration
 })
