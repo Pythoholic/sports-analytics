@@ -9,7 +9,7 @@ import { join } from 'path';
 
 interface LambdaStackProps extends StackProps {
     sportsTable: ITable;
-    statisticsTable: ITable;
+    //statisticsTable: ITable;
 }
 
 export class LambdaStack extends Stack {
@@ -24,11 +24,11 @@ export class LambdaStack extends Stack {
     constructor(scope: Construct, id: string, props?: LambdaStackProps) {
         super(scope, id, props);
 
-        // Ingest Lambda
+        // Ingest Lambda - For the POST Calls
         const ingestLambda = this.createLambda('IngestLambda', 'ingest/handler.ts', props.sportsTable);
         this.ingestLambdaIntegration = new LambdaIntegration(ingestLambda);
 
-        // Matches Lambda
+        // Matches Lambda - For the GET Calls
         const matchesLambda = this.createLambda('MatchesLambda', 'matches/handler.ts', props.sportsTable);
         this.matchesLambdaIntegration = new LambdaIntegration(matchesLambda);
 
@@ -41,9 +41,9 @@ export class LambdaStack extends Stack {
         const teamStatisticsLambda = this.createLambda('TeamStatisticsLambda', 'teamStatistics/handler.ts', props.sportsTable);
         this.teamStatisticsLambdaIntegration = new LambdaIntegration(teamStatisticsLambda);
 
-        // Statistics Lambda (new)
-        const statisticsLambda = this.createLambda('StatisticsLambda', 'statistics/handler.ts', props.statisticsTable);
-        this.statisticsLambdaIntegration = new LambdaIntegration(statisticsLambda);
+        // Statistics Lambda (new) : TODO : Need to create code for this to keep the statistics in a separate Database.
+        // const statisticsLambda = this.createLambda('StatisticsLambda', 'statistics/handler.ts', props.statisticsTable);
+        // this.statisticsLambdaIntegration = new LambdaIntegration(statisticsLambda);
     }
 
     private createLambda(name: string, entryPath: string, table: ITable): NodejsFunction {
