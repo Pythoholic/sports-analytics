@@ -1,12 +1,8 @@
-import { DynamoDBClient, GetItemCommand, ScanCommand, UpdateItemCommand } from "@aws-sdk/client-dynamodb";
+import { DynamoDBClient, UpdateItemCommand } from "@aws-sdk/client-dynamodb";
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
-import { unmarshall } from "@aws-sdk/util-dynamodb";
-
-
 
 export async function updateSports(event: APIGatewayProxyEvent, ddbClient: DynamoDBClient): Promise<APIGatewayProxyResult>  {
     
-
     if (event.queryStringParameters && ('id' in event.queryStringParameters) && event.body) {
         const parsedBody = JSON.parse(event.body)
         const sportsId = event.queryStringParameters['id'];
