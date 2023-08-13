@@ -22,6 +22,16 @@ The system is built using AWS services:
 - Node.js 18.x
 - TypeScript
 
+## Using Deployment and Install Script
+- We can install and deploy the resources manually as well
+- If not, then we can make use of the install.sh file to install all dependencies and deploy the resources
+- Run the following within the main parent folder
+
+```
+chmod +x install.sh
+sh install.sh
+```
+
 ## Configure AWS CLI
 Make sure you have the AWS CLI installed and configured with the appropriate credentials. You can configure it by running:
 ```
