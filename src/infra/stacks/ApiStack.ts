@@ -18,11 +18,8 @@ export class ApiStack extends Stack {
 
         // Endpoints for /ingest
         const sportsResource = api.root.addResource('ingest');
-        sportsResource.addMethod('GET', props.ingestLambdaIntegration)
         sportsResource.addMethod('POST', props.ingestLambdaIntegration)
-        sportsResource.addMethod('PUT', props.ingestLambdaIntegration)
-        sportsResource.addMethod('DELETE', props.ingestLambdaIntegration)
-
+        
         // GET /matches : Retrieve a list of all matches.
         const matchesResource = api.root.addResource('matches');
         matchesResource.addMethod('GET', props.matchesLambdaIntegration);
