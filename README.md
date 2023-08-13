@@ -58,14 +58,14 @@ For example:
 ✨  Deployment time: 34.1s
 
 Outputs:
-ApiStack.SportsApiEndpoint9C0737D6 = https://ood8fkozj4.execute-api.ap-south-1.amazonaws.com/prod/
+ApiStack.SportsApiEndpoint9C0737D6 = https://<your-endpoint>.execute-api.ap-south-1.amazonaws.com/prod/
 Stack ARN:
-arn:aws:cloudformation:ap-south-1:134793429233:stack/ApiStack/1ce6a480-396d-11ee-9053-02165d5d667c
+arn:aws:cloudformation:ap-south-1:<account-id>:stack/ApiStack/1ce6a480-396d-11ee-9053-02165d5d667c
 
 ✨  Total time: 37.43s
 ```
 
-This is the endpoint: https://ood8fkozj4.execute-api.ap-south-1.amazonaws.com/prod/
+This is the endpoint: https://<your-endpoint>.execute-api.ap-south-1.amazonaws.com/prod/
 This will be different based on your region and unique id.
 
 ## Endpoint and API Interactions
@@ -79,7 +79,7 @@ API Endpoints
 ## Usage patterns and expected output:
 
 - Ingest Sports Data: POST /ingest
-- POST https://ood8fkozj4.execute-api.ap-south-1.amazonaws.com/prod/ingest
+- POST https://<your-endpoint>.execute-api.ap-south-1.amazonaws.com/prod/ingest
 - Body:
 ```
 {
@@ -119,7 +119,7 @@ API Endpoints
 
 - Retrieve Matches: GET /matches
 
-- GET https://ood8fkozj4.execute-api.ap-south-1.amazonaws.com/prod/matches
+- GET https://<your-endpoint>.execute-api.ap-south-1.amazonaws.com/prod/matches
 - Response:
 ```
 {
@@ -147,7 +147,7 @@ API Endpoints
 }
 ```
 - Retrieve Match Details: GET /matches/{match_id}
-- GET https://ood8fkozj4.execute-api.ap-south-1.amazonaws.com/prod/matches/67890
+- GET https://<your-endpoint>.execute-api.ap-south-1.amazonaws.com/prod/matches/67890
 - Response:
 ```
 {
