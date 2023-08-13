@@ -195,4 +195,4 @@ to discuss what you would like to change.
 Please make sure to update tests as appropriate.
 
 ## License
-This project is licensed under the GNU License - see the LICENSE.md file for details.
+This project is licensed under the GPL 3.0 License - see the LICENSE.md file for details.
