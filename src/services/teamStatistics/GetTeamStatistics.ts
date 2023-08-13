@@ -6,7 +6,7 @@ import { unmarshall } from "@aws-sdk/util-dynamodb";
 
 export async function getTeamStatistics(event: APIGatewayProxyEvent, ddbClient: DynamoDBClient): Promise<APIGatewayProxyResult>  {
     
-
+    // This is just a float code that we need to change.
     if (event.queryStringParameters) {
         if ('id' in event.queryStringParameters){
             const sportsId = event.queryStringParameters['id'];
