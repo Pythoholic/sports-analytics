@@ -25,8 +25,5 @@ export function validateAsSportsEntry(arg: any) {
     if ((arg as SportsEntry).event_details == undefined) {
         throw new MissingFieldError('event_details');
     }
-    if ((arg as SportsEntry).event_details.player == undefined) {
-        throw new MissingFieldError('event_details.player');
-    }
-    
+
 }

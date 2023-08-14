@@ -9,9 +9,9 @@ async function handler(event: APIGatewayProxyEvent, context: Context): Promise<A
     let message: string;
 
     try {
-        switch (event.httpMethod){
+        switch (event.httpMethod) {
             case 'GET':
-                const getResponse =  await getTeamStatistics(event, ddbClient);
+                const getResponse = await getTeamStatistics(event, ddbClient);
                 return getResponse;
             default:
                 break;
@@ -22,15 +22,15 @@ async function handler(event: APIGatewayProxyEvent, context: Context): Promise<A
             statusCode: 500,
             body: JSON.stringify(error.message)
         }
-        
+
     }
 
     const response: APIGatewayProxyResult = {
-        statusCode:200,
+        statusCode: 200,
         body: JSON.stringify(message)
     }
-    
+
     return response;
 }
 
-export {handler}
+export { handler }

@@ -4,8 +4,8 @@ import { unmarshall } from "@aws-sdk/util-dynamodb";
 
 
 
-export async function getMatches(event: APIGatewayProxyEvent, ddbClient: DynamoDBClient): Promise<APIGatewayProxyResult>  {
-    
+export async function getMatches(event: APIGatewayProxyEvent, ddbClient: DynamoDBClient): Promise<APIGatewayProxyResult> {
+
     const result = await ddbClient.send(new ScanCommand({
         TableName: process.env.TABLE_NAME,
     }));
@@ -26,7 +26,7 @@ export async function getMatches(event: APIGatewayProxyEvent, ddbClient: DynamoD
             match_id: unmarshalledItem.match_id,
             team: unmarshalledItem.team,
             opponent: unmarshalledItem.opponent,
-            date: unmarshalledItem.timestamp 
+            date: unmarshalledItem.timestamp
         };
     });
 

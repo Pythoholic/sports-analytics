@@ -16,7 +16,9 @@
                 "${relativeFile}"
             ],
             "env": {
-                "AWS_REGION" : "ap-south-1"
+                "AWS_REGION" : "ap-south-1",
+                "STATISTICS_TABLE_NAME": "StatisticsTable-0a76b266a586",
+                "TABLE_NAME": "SportTable-0a76b266a586"
             }
             
         }

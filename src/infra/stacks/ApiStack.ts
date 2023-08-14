@@ -11,7 +11,7 @@ interface ApiStackProps extends StackProps {
 }
 export class ApiStack extends Stack {
 
-    constructor(scope: Construct, id: string, props: ApiStackProps){
+    constructor(scope: Construct, id: string, props: ApiStackProps) {
         super(scope, id, props)
 
         const api = new RestApi(this, 'SportsApi');
@@ -19,7 +19,7 @@ export class ApiStack extends Stack {
         // Endpoints for /ingest
         const sportsResource = api.root.addResource('ingest');
         sportsResource.addMethod('POST', props.ingestLambdaIntegration)
-        
+
         // GET /matches : Retrieve a list of all matches.
         const matchesResource = api.root.addResource('matches');
         matchesResource.addMethod('GET', props.matchesLambdaIntegration);

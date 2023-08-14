@@ -4,7 +4,7 @@ import { unmarshall } from "@aws-sdk/util-dynamodb";
 
 
 
-export async function getTeamStatistics(event: APIGatewayProxyEvent, ddbClient: DynamoDBClient): Promise<APIGatewayProxyResult>  {
+export async function getTeamStatistics(event: APIGatewayProxyEvent, ddbClient: DynamoDBClient): Promise<APIGatewayProxyResult> {
     try {
         const teamName = event.pathParameters?.team_name;
         const decodedTeamName = decodeURIComponent(teamName || '');
@@ -20,18 +20,18 @@ export async function getTeamStatistics(event: APIGatewayProxyEvent, ddbClient: 
         const result = await ddbClient.send(new GetItemCommand({
             TableName: process.env.STATISTICS_TABLE_NAME,
             Key: {
-                'team': {S: decodedTeamName}
+                'team': { S: decodedTeamName }
             }
         }));
 
-        if (result.Item){
+        if (result.Item) {
             const unmarshalledItem = unmarshall(result.Item)
             return {
                 statusCode: 200,
                 body: JSON.stringify(unmarshalledItem)
             }
         }
-        else{
+        else {
             return {
                 statusCode: 401,
                 body: JSON.stringify(`Sports with ID ${decodedTeamName} not Found!`)
@@ -46,5 +46,5 @@ export async function getTeamStatistics(event: APIGatewayProxyEvent, ddbClient: 
             })
         };
     }
-    
+
 }
