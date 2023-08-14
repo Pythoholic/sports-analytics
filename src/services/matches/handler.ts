@@ -9,16 +9,16 @@ async function handler(event: APIGatewayProxyEvent, context: Context): Promise<A
     let message: string;
 
     try {
-        switch (event.httpMethod){
+        switch (event.httpMethod) {
             case 'GET':
-                const getResponse =  await getMatches(event, ddbClient);
+                const getResponse = await getMatches(event, ddbClient);
                 return getResponse;
             default:
                 break;
         }
     } catch (error) {
         console.error(error)
-        if (error instanceof MissingFieldError){
+        if (error instanceof MissingFieldError) {
             return {
                 statusCode: 400,
                 body: JSON.stringify(error.message)
@@ -28,8 +28,8 @@ async function handler(event: APIGatewayProxyEvent, context: Context): Promise<A
             statusCode: 500,
             body: JSON.stringify(error.message)
         }
-        
+
     }
 }
 
-export {handler}
+export { handler }

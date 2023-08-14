@@ -1,49 +1,94 @@
-import { DynamoDBClient, GetItemCommand, ScanCommand } from "@aws-sdk/client-dynamodb";
+import { DynamoDBClient, GetItemCommand, QueryCommand, ScanCommand } from "@aws-sdk/client-dynamodb";
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
 import { unmarshall } from "@aws-sdk/util-dynamodb";
 
-
-
-export async function getMatchStatistics(event: APIGatewayProxyEvent, ddbClient: DynamoDBClient): Promise<APIGatewayProxyResult>  {
-    
-    // This is just a float code that we need to change.
-    if (event.queryStringParameters) {
-        if ('id' in event.queryStringParameters){
-            const sportsId = event.queryStringParameters['id'];
-            const getItemResponse = await ddbClient.send(new GetItemCommand({
-                TableName: process.env.TABLE_NAME,
-                Key: {
-                    'id': {S: sportsId}
-                }
-            }))
-            if (getItemResponse.Item){
-                const unmarshalledItem = unmarshall(getItemResponse.Item)
-                return {
-                    statusCode: 200,
-                    body: JSON.stringify(unmarshalledItem)
-                }
-            }else{
-                return {
-                    statusCode: 401,
-                    body: JSON.stringify(`Sports with ID ${sportsId} not Found!`)
-                }
-            }
-        }else{
-            return {
-                statusCode: 401,
-                body: JSON.stringify('ID Required. Please provide the ID to query.')
-            }
-        }
+/*
+This API Call should process the data in the SportsTable 
+and get the response like this:
+ball possesssion can be calculated if the event gives ball passing events
+{
+    "status": "success",
+    "match_id": "12345",
+    "statistics": {
+        "team": "FC Barcelona",
+        "opponent": "Real Madrid",
+        "total_goals": 3,
+        "total_fouls": 2,
+        "ball_possession_percentage": 58
     }
+}
+*/
 
-    const result = await ddbClient.send(new ScanCommand({
-        TableName: process.env.TABLE_NAME,
-    }));
-    const unmarshalledItems = result.Items?.map(item => unmarshall(item));
-    console.log(unmarshalledItems);
+export async function getMatchStatistics(event: APIGatewayProxyEvent, ddbClient: DynamoDBClient): Promise<APIGatewayProxyResult> {
 
-    return {
-        statusCode: 201,
-        body: JSON.stringify(unmarshalledItems)
+    if (event.pathParameters && 'match_id' in event.pathParameters) {
+        const matchId = event.pathParameters?.match_id;
+        console.log("Received match ID:", matchId);
+        const getItemsMatchResponse = await ddbClient.send(new QueryCommand({
+            TableName: process.env.TABLE_NAME,
+            KeyConditionExpression: "match_id = :matchId",
+            ExpressionAttributeValues: {
+                ":matchId": { S: matchId }
+            }
+        }));
+
+        // lets add a counter so that we can get data in the for loop.
+        let stats_counter = {
+            total_goals: 0,
+            total_fouls: 0,
+            total_passing_count: 0,
+            total_team_passing: 0,
+        }
+
+        if (getItemsMatchResponse.Items && getItemsMatchResponse.Items.length > 0) {
+            const unmarshalledItems = getItemsMatchResponse.Items.map(item => unmarshall(item));
+
+            const team = unmarshalledItems[0]?.team;
+            const opponent = unmarshalledItems[0]?.opponent;
+
+            for (const unmarshalledItem of unmarshalledItems) {
+                //console.log(unmarshalledItem.events);
+                if (unmarshalledItem.event_type === 'goal') {
+                    stats_counter.total_goals++;
+                }
+                if (unmarshalledItem.event_type === 'foul') {
+                    stats_counter.total_fouls++;
+                }
+                if (unmarshalledItem.event_type === 'passing') {
+                    stats_counter.total_passing_count++;
+                    if (unmarshalledItem.team === team) {
+                        stats_counter.total_team_passing++;
+                    }
+                }
+            }
+            // Lets calculate the ball passing percentage
+            const ball_possession = stats_counter.total_passing_count != 0 ? (stats_counter.total_team_passing / stats_counter.total_passing_count) * 100 : 0;
+            const ball_possession_percentage = `${ball_possession}%`
+            return {
+                statusCode: 200,
+                body: JSON.stringify({
+                    status: "success",
+                    match_id: matchId,
+                    statistics: {
+                        team: team,
+                        opponent: opponent,
+                        total_goals: stats_counter.total_goals,
+                        total_fouls: stats_counter.total_fouls,
+                        ball_possession_percentage: ball_possession_percentage
+
+                    }
+                })
+            };
+        } else {
+            return {
+                statusCode: 400,
+                body: JSON.stringify(`Match with Match ID: ${matchId} not found.`)
+            };
+        }
+    } else {
+        return {
+            statusCode: 400,
+            body: JSON.stringify(`The request given doesn't have the match_id in the parameters.`)
+        };
     }
 }

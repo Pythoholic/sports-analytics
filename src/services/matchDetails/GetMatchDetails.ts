@@ -4,7 +4,7 @@ import { unmarshall } from "@aws-sdk/util-dynamodb";
 
 
 
-export async function getMatchDetails(event: APIGatewayProxyEvent, ddbClient: DynamoDBClient): Promise<APIGatewayProxyResult>  {
+export async function getMatchDetails(event: APIGatewayProxyEvent, ddbClient: DynamoDBClient): Promise<APIGatewayProxyResult> {
     const matchId = event.pathParameters?.match_id;
 
     if (!matchId) {

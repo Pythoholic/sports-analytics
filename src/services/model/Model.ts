@@ -1,12 +1,11 @@
-
 export interface PlayerDetails {
-    name: string;
+    name?: string;
     position?: string;
     number?: number;
 }
 
 export interface EventDetails {
-    player: PlayerDetails;
+    player?: PlayerDetails;
     goal_type?: string;
     minute?: number;
     assist?: PlayerDetails | null;
@@ -14,7 +13,6 @@ export interface EventDetails {
 }
 
 export interface SportsEntry {
-    id: string,
     match_id: string;
     timestamp: string;
     team: string;
@@ -22,3 +20,7 @@ export interface SportsEntry {
     event_type: string;
     event_details: EventDetails;
 }
+
+
+
+
