@@ -62,8 +62,8 @@ export async function getMatchStatistics(event: APIGatewayProxyEvent, ddbClient:
                 }
             }
             // Lets calculate the ball passing percentage
-            const ball_possession_percentage = stats_counter.total_passing_count != 0 ? (stats_counter.total_team_passing / stats_counter.total_passing_count) * 100 : 0;
-
+            const ball_possession = stats_counter.total_passing_count != 0 ? (stats_counter.total_team_passing / stats_counter.total_passing_count) * 100 : 0;
+            const ball_possession_percentage = `${ball_possession}%`
             return {
                 statusCode: 200,
                 body: JSON.stringify({
