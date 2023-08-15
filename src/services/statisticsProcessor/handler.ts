@@ -1,6 +1,6 @@
 import { Context, DynamoDBStreamEvent } from "aws-lambda";
 import { statsProcessor } from "./StatsProcessor";
-
+import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
 
 async function handler(event: DynamoDBStreamEvent, context: Context) {
 

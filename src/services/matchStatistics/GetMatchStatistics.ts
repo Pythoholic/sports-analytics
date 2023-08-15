@@ -23,10 +23,11 @@ export async function getMatchStatistics(event: APIGatewayProxyEvent, ddbClient:
 
     if (event.pathParameters && 'match_id' in event.pathParameters) {
         const matchId = event.pathParameters?.match_id;
+
         console.log("Received match ID:", matchId);
-        const getItemsMatchResponse = await ddbClient.send(new QueryCommand({
+        const getItemsMatchResponse = await ddbClient.send(new ScanCommand({
             TableName: process.env.TABLE_NAME,
-            KeyConditionExpression: "match_id = :matchId",
+            FilterExpression: "match_id = :matchId",
             ExpressionAttributeValues: {
                 ":matchId": { S: matchId }
             }
@@ -42,19 +43,17 @@ export async function getMatchStatistics(event: APIGatewayProxyEvent, ddbClient:
 
         if (getItemsMatchResponse.Items && getItemsMatchResponse.Items.length > 0) {
             const unmarshalledItems = getItemsMatchResponse.Items.map(item => unmarshall(item));
-
             const team = unmarshalledItems[0]?.team;
             const opponent = unmarshalledItems[0]?.opponent;
 
             for (const unmarshalledItem of unmarshalledItems) {
-                //console.log(unmarshalledItem.events);
                 if (unmarshalledItem.event_type === 'goal') {
                     stats_counter.total_goals++;
                 }
                 if (unmarshalledItem.event_type === 'foul') {
                     stats_counter.total_fouls++;
                 }
-                if (unmarshalledItem.event_type === 'passing') {
+                if (unmarshalledItem.event_type === 'passing' || unmarshalledItem.event_type === 'pass') {
                     stats_counter.total_passing_count++;
                     if (unmarshalledItem.team === team) {
                         stats_counter.total_team_passing++;

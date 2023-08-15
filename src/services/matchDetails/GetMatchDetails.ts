@@ -31,14 +31,16 @@ export async function getMatchDetails(event: APIGatewayProxyEvent, ddbClient: Dy
 
     const events = result.Items.map(item => {
         const unmarshalledItem = unmarshall(item);
-        return {
+        const eventDetails = {
             event_type: unmarshalledItem.event_type,
             timestamp: unmarshalledItem.timestamp,
-            player: unmarshalledItem.event_details.player.name,
-            goal_type: unmarshalledItem.event_details.goal_type,
-            minute: unmarshalledItem.event_details.minute,
-            video_url: unmarshalledItem.event_details.video_url
+            player: unmarshalledItem.event_details?.player?.name,
+            goal_type: unmarshalledItem.event_details?.goal_type,
+            minute: unmarshalledItem.event_details?.minute,
+            video_url: unmarshalledItem.event_details?.video_url
         };
+        Object.keys(eventDetails).forEach(key => eventDetails[key] === undefined && delete eventDetails[key]);
+        return eventDetails;
     });
 
     const matchDetails = {

@@ -20,21 +20,29 @@ export async function getMatches(event: APIGatewayProxyEvent, ddbClient: DynamoD
         };
     }
 
-    const matches = result.Items.map(item => {
+    const uniqueMatchIds = new Set();
+    const uniqueMatches = [];
+
+    result.Items.forEach(item => {
         const unmarshalledItem = unmarshall(item);
-        return {
-            match_id: unmarshalledItem.match_id,
-            team: unmarshalledItem.team,
-            opponent: unmarshalledItem.opponent,
-            date: unmarshalledItem.timestamp
-        };
+        const matchId = unmarshalledItem.match_id;
+
+        if (!uniqueMatchIds.has(matchId)) {
+            uniqueMatchIds.add(matchId);
+            uniqueMatches.push({
+                match_id: matchId,
+                team: unmarshalledItem.team,
+                opponent: unmarshalledItem.opponent,
+                date: unmarshalledItem.timestamp
+            });
+        }
     });
 
     return {
         statusCode: 200,
         body: JSON.stringify({
             status: "success",
-            matches: matches
+            matches: uniqueMatches
         })
     };
 }

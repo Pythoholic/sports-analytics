@@ -9,7 +9,7 @@ export async function postSports(event: APIGatewayProxyEvent, ddbClient: DynamoD
     try {
         const randomId = v4();
         const item = JSON.parse(event.body);
-        //item.id = randomId
+        item.id = randomId
         //validateAsSportsEntry(item)
 
         const result = await ddbClient.send(new PutItemCommand({
@@ -24,7 +24,7 @@ export async function postSports(event: APIGatewayProxyEvent, ddbClient: DynamoD
                 status: "success",
                 message: "Data successfully ingested.",
                 data: {
-                    event_id: randomId,
+                    event_id: item.id,
                     timestamp: item.timestamp
                 }
             })
