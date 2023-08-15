@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Define the API endpoint URL
-API_URL="https://q7ev0md3fi.execute-api.ap-south-1.amazonaws.com/prod/ingest"
+API_URL="https://bp6q58r2hi.execute-api.ap-south-1.amazonaws.com/prod/ingest"
 
 # Read the JSON data from the file and iterate over each event
 cat sportsevents.json | jq -c '.[]' | while read -r item; do

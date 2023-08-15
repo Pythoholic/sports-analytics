@@ -80,9 +80,13 @@ export async function getMatchStatistics(event: APIGatewayProxyEvent, ddbClient:
             };
         } else {
             return {
-                statusCode: 400,
-                body: JSON.stringify(`Match with Match ID: ${matchId} not found.`)
+                statusCode: 404,
+                body: JSON.stringify({
+                    status: "failed", 
+                    message: `Match with Match ID: ${matchId} not found!`
+                })
             };
+            
         }
     } else {
         return {

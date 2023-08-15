@@ -25,7 +25,7 @@ export async function getMatchDetails(event: APIGatewayProxyEvent, ddbClient: Dy
     if (!result.Items || result.Items.length === 0) {
         return {
             statusCode: 404,
-            body: JSON.stringify({ status: "error", message: "Match not found." })
+            body: JSON.stringify({ status: "error", message: `Match with Match ID: ${matchId} not found!` })
         };
     }
 

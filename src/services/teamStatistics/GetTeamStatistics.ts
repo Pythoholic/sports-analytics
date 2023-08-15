@@ -33,8 +33,11 @@ export async function getTeamStatistics(event: APIGatewayProxyEvent, ddbClient: 
         }
         else {
             return {
-                statusCode: 401,
-                body: JSON.stringify(`Sports with ID ${decodedTeamName} not Found!`)
+                statusCode: 404,
+                body: JSON.stringify({
+                    status: "failed", 
+                    message: `Team with the name ${decodedTeamName} is not Found!`
+                })
             }
         }
     } catch (error) {
