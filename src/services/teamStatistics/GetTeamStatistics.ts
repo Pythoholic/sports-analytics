@@ -25,10 +25,15 @@ export async function getTeamStatistics(event: APIGatewayProxyEvent, ddbClient: 
         }));
 
         if (result.Item) {
+            delete result.Item['team'];
             const unmarshalledItem = unmarshall(result.Item)
             return {
                 statusCode: 200,
-                body: JSON.stringify(unmarshalledItem)
+                body: JSON.stringify({
+                    status: "success",
+                    team: decodedTeamName,
+                    statistics: unmarshalledItem
+                })
             }
         }
         else {

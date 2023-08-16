@@ -1,7 +1,7 @@
 import { handler } from "../src/services/teamStatistics/handler";
 
 process.env.AWS_REGION = 'ap-south-1';
-process.env.STATISTICS_TABLE_NAME = 'StatisticsTable-0a586b208460';
+process.env.STATISTICS_TABLE_NAME = 'StatisticsTable-0a76b266a586';
 
 const team_name = "FC Barcelona";
 const event = {
