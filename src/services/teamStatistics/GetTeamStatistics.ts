@@ -25,16 +25,24 @@ export async function getTeamStatistics(event: APIGatewayProxyEvent, ddbClient: 
         }));
 
         if (result.Item) {
+            delete result.Item['team'];
             const unmarshalledItem = unmarshall(result.Item)
             return {
                 statusCode: 200,
-                body: JSON.stringify(unmarshalledItem)
+                body: JSON.stringify({
+                    status: "success",
+                    team: decodedTeamName,
+                    statistics: unmarshalledItem
+                })
             }
         }
         else {
             return {
-                statusCode: 401,
-                body: JSON.stringify(`Sports with ID ${decodedTeamName} not Found!`)
+                statusCode: 404,
+                body: JSON.stringify({
+                    status: "failed", 
+                    message: `Team with the name ${decodedTeamName} is not Found!`
+                })
             }
         }
     } catch (error) {

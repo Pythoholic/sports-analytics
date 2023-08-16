@@ -1,7 +1,7 @@
 import { handler } from "../src/services/matchStatistics/handler";
 
 process.env.AWS_REGION = 'ap-south-1';
-process.env.TABLE_NAME = 'SportTable-0a554d71a646';
+process.env.TABLE_NAME = 'SportTable-0a76b266a586';
 
 const match_id = "12345";
 const event = {

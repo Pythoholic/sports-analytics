@@ -17,11 +17,11 @@ export class DataStack extends Stack {
         // Table for Ingest
         this.sportsTable = new Table(this, 'SportTable', {
             partitionKey: {
-                name: 'match_id',
+                name: 'id',
                 type: AttributeType.STRING
             },
             sortKey: {
-                name: 'timestamp',
+                name: 'match_id',
                 type: AttributeType.STRING
             },
             removalPolicy: RemovalPolicy.DESTROY,

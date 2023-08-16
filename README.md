@@ -83,8 +83,8 @@ API Endpoints
 - Ingest Sports Data: POST /ingest
 - Retrieve Matches: GET /matches
 - Retrieve Match Details: GET /matches/{match_id}
-- Retrieve Match Statistics: GET /statistics/matches/{match_id} // Under development
-- Retrieve Team Statistics: GET /statistics/teams/{team_name} // Under development
+- Retrieve Match Statistics: GET /matches/{match_id}/statistics
+- Retrieve Team Statistics: GET /teams/{team_name}/statistics
 
 ## Usage patterns and expected output:
 
@@ -128,7 +128,6 @@ API Endpoints
 ```
 
 - Retrieve Matches: GET /matches
-
 - GET https://<your-endpoint>.execute-api.ap-south-1.amazonaws.com/prod/matches
 - Response:
 ```
@@ -156,6 +155,7 @@ API Endpoints
 	]
 }
 ```
+
 - Retrieve Match Details: GET /matches/{match_id}
 - GET https://<your-endpoint>.execute-api.ap-south-1.amazonaws.com/prod/matches/67890
 - Response:
@@ -196,6 +196,41 @@ API Endpoints
 }
 ```
 
+- Retrieve Match Statistics: GET /matches/{match_id}/statistics
+- GET https://<endpoint>.execute-api.ap-south-1.amazonaws.com/prod/matches/12345/statistics
+- Response:
+```
+{
+	"status": "success",
+	"match_id": "12345",
+	"statistics": {
+		"team": "FC Barcelona",
+		"opponent": "Real Madrid",
+		"total_goals": 7,
+		"total_fouls": 7,
+		"ball_possession_percentage": "50%"
+	}
+}
+```
+
+- Retrieve Team Statistics: GET /teams/{team_name}/statistics
+- GET https://<endpoint>.execute-api.ap-south-1.amazonaws.com/prod/teams/FC Barcelona/statistics
+- Response:
+```
+{
+	"status": "success",
+	"team": "FC Barcelona",
+	"statistics": {
+		"total_losses": 1,
+		"total_draws": 0,
+		"total_matches": 1,
+		"total_goals_scored": 6,
+		"total_wins": 0,
+		"total_fouls": 8,
+		"total_goals_conceded": 7
+	}
+}
+```
 
 ## Contributing
 

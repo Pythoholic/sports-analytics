@@ -21,6 +21,15 @@ export interface SportsEntry {
     event_details: EventDetails;
 }
 
-
+export interface TeamStatistics {
+    team: string;
+    total_matches: number;
+    total_wins: number;
+    total_draws: number;
+    total_losses: number;
+    total_goals_scored: number;
+    total_fouls: number;
+    total_goals_conceded: number;
+}
 
 

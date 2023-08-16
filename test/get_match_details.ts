@@ -1,11 +1,12 @@
-import { handler } from "../src/services/matches/handler";
+import { handler } from "../src/services/matchDetails/handler";
 
 process.env.AWS_REGION = 'ap-south-1';
-process.env.TABLE_NAME = 'SportTable-02dff94f18a2';
+process.env.TABLE_NAME = 'SportTable-0a76b266a586';
 
-const match_id = '67890';
+const match_id = '12345';
 const event = {
     httpMethod: 'GET',
+    pathParameters: { match_id: "12345" },
     path: `/matches/${match_id}`
 } as any;
 

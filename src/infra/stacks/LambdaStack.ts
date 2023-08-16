@@ -1,4 +1,4 @@
-import { Stack, StackProps } from 'aws-cdk-lib';
+import { Duration, Stack, StackProps } from 'aws-cdk-lib';
 import { LambdaIntegration } from 'aws-cdk-lib/aws-apigateway';
 import { ITable } from 'aws-cdk-lib/aws-dynamodb';
 import { Effect, PolicyStatement } from 'aws-cdk-lib/aws-iam';
@@ -49,8 +49,10 @@ export class LambdaStack extends Stack {
             handler: 'handler',
             entry: join(__dirname, '..', '..', 'services', 'statisticsProcessor/handler.ts'),
             environment: {
+                TABLE_NAME: props.sportsTable.tableName,
                 STATISTICS_TABLE_NAME: props.statisticsTable.tableName,
             },
+            timeout: Duration.seconds(300),
         });
 
         statisticsProcessorLambda.addEventSource(new DynamoEventSource(props.sportsTable, {
@@ -61,10 +63,14 @@ export class LambdaStack extends Stack {
         statisticsProcessorLambda.addToRolePolicy(
             new PolicyStatement({
                 effect: Effect.ALLOW,
-                resources: [props.statisticsTable.tableArn],
+                resources: [props.statisticsTable.tableArn, props.sportsTable.tableArn],
                 actions: [
                     'dynamodb:PutItem',
+                    'dynamodb:GetItem',
                     'dynamodb:UpdateItem',
+                    'dynamodb:Scan',
+                    'dynamodb:DeleteItem',
+                    'dynamodb:Query'
                 ],
             })
         );
@@ -79,6 +85,7 @@ export class LambdaStack extends Stack {
                 TABLE_NAME: table.tableName,
                 STATISTICS_TABLE_NAME: statisticsTable.tableName,
             },
+            timeout: Duration.seconds(300),
         });
 
         lambda.addToRolePolicy(
@@ -91,6 +98,7 @@ export class LambdaStack extends Stack {
                     'dynamodb:UpdateItem',
                     'dynamodb:Scan',
                     'dynamodb:DeleteItem',
+                    'dynamodb:Query'
                 ],
             })
         );

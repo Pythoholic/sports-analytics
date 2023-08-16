@@ -25,20 +25,22 @@ export async function getMatchDetails(event: APIGatewayProxyEvent, ddbClient: Dy
     if (!result.Items || result.Items.length === 0) {
         return {
             statusCode: 404,
-            body: JSON.stringify({ status: "error", message: "Match not found." })
+            body: JSON.stringify({ status: "error", message: `Match with Match ID: ${matchId} not found!` })
         };
     }
 
     const events = result.Items.map(item => {
         const unmarshalledItem = unmarshall(item);
-        return {
+        const eventDetails = {
             event_type: unmarshalledItem.event_type,
             timestamp: unmarshalledItem.timestamp,
-            player: unmarshalledItem.event_details.player.name,
-            goal_type: unmarshalledItem.event_details.goal_type,
-            minute: unmarshalledItem.event_details.minute,
-            video_url: unmarshalledItem.event_details.video_url
+            player: unmarshalledItem.event_details?.player?.name,
+            goal_type: unmarshalledItem.event_details?.goal_type,
+            minute: unmarshalledItem.event_details?.minute,
+            video_url: unmarshalledItem.event_details?.video_url
         };
+        Object.keys(eventDetails).forEach(key => eventDetails[key] === undefined && delete eventDetails[key]);
+        return eventDetails;
     });
 
     const matchDetails = {
