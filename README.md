@@ -75,6 +75,29 @@ arn:aws:cloudformation:ap-south-1:<account-id>:stack/ApiStack/1ce6a480-396d-11ee
 ✨  Total time: 37.43s
 ```
 
+### Ingest Script for Testing
+If you wish to ingest data to test it you can run this script
+```
+sh ingest_data.sh
+```
+
+Replace the Endpoint URL for POST Call.
+```
+#!/bin/bash
+
+# Define the API endpoint URL
+API_URL="https://bp6q58r2hi.execute-api.ap-south-1.amazonaws.com/prod/ingest"
+
+# Read the JSON data from the file and iterate over each event
+cat sportsevents.json | jq -c '.[]' | while read -r item; do
+  # Make a POST request to the API endpoint
+  curl -X POST -H "Content-Type: application/json" -d "$item" "$API_URL"
+  
+  # Add a sleep to simulate some delay between requests (optional)
+  sleep 3
+done
+```
+
 This is the endpoint: https://<your-endpoint>.execute-api.ap-south-1.amazonaws.com/prod/
 This will be different based on your region and unique id.
 
