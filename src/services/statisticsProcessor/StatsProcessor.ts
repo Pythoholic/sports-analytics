@@ -5,39 +5,6 @@ import { unmarshall } from "@aws-sdk/util-dynamodb";
 /* This is to update the statistics table for team stats
 we will get an event from an INSERT Operation to the SportsTable
 We need to process each event and store the stats in the Statistics Table.
-{   
-    "id": uuid,
-    "match_id": "67891",
-    "timestamp": "2023-08-11T20:30:00Z",
-    "team": "Manchester United",
-    "opponent": "Chelsea",
-    "event_type": "goal",
-    "event_details": {
-        "player": {
-            "name": "Cristiano Ronaldo",
-            "position": "Forward",
-            "number": 7
-        },
-        "goal_type": "free-kick",
-        "minute": 55,
-        "assist": {
-            "name": "Bruno Fernandes",
-            "position": "Midfielder",
-            "number": 18
-        },
-        "video_url": "https://example.com/free_kick_goal_video.mp4"
-    }
-}
-Stats for the team that we want to store are:
-{
-    "team" : "Manchester United",
-    "total_matches": 10,
-    "total_wins": 5,
-    "total_draws" : 2,
-    "total_losses" : 3,
-    "total_goals_scored": 15,
-    "total_goals_conceded": 5
-}
 */
 
 export async function statsProcessor(newImage: { [key: string]: AttributeValue }) {
@@ -95,7 +62,6 @@ export async function statsProcessor(newImage: { [key: string]: AttributeValue }
 
         // Once we have set the initial row for our stats table
         // We can add our update stats based on the event we get
-
         let update_expression_stats = "";
         let expression_attrib_value: { [key: string]: DDBAttributeValue } = {};
 
@@ -163,14 +129,11 @@ export async function statsProcessor(newImage: { [key: string]: AttributeValue }
             console.log("getItemsMatchResponse:", getItemsMatchResponse)
 
             if (getItemsMatchResponse.Items && getItemsMatchResponse.Items.length > 0) {
-                console.log("getItemsMatchResponse ----> :", getItemsMatchResponse)
                 const unmarshalledItems = getItemsMatchResponse.Items.map(item => unmarshall(item));
-
                 const team = unmarshalledItems[0]?.team;
                 const opponent = unmarshalledItems[0]?.opponent;
 
                 for (const unmarshalledItem of unmarshalledItems) {
-                    console.log("unmarshalledItem ----> :", unmarshalledItem)
                     if (unmarshalledItem.event_type === 'goal' && unmarshalledItem.team === team) {
                         stats_counter.total_goals_team++;
                     } else if (unmarshalledItem.event_type === 'goal' && unmarshalledItem.team === opponent) {
