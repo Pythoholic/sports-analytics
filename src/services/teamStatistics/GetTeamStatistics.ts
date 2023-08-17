@@ -3,7 +3,6 @@ import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
 import { unmarshall } from "@aws-sdk/util-dynamodb";
 
 
-
 export async function getTeamStatistics(event: APIGatewayProxyEvent, ddbClient: DynamoDBClient): Promise<APIGatewayProxyResult> {
     try {
         const teamName = event.pathParameters?.team_name;
